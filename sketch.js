@@ -1,0 +1,90 @@
+var edges = [];
+var circle = [];
+var canvasSize = 1000;
+let root;
+let n;
+let r;
+let angle;
+let step;
+let maxDepth;
+let currentDepth;
+//
+function setup() {
+  createCanvas(canvasSize, canvasSize);
+  angleMode(RADIANS);
+  //Root
+  var rootX = width / 2;
+  var rootY = width / 2;
+  root = new Node(rootX, rootY);
+  var nodes = [];
+  n = random(1, 12);
+  r = n * 20;
+  angle = 0;
+  step = TWO_PI / n;
+  maxDepth = 100;
+  currentDepth = 0;
+  //
+  var rootX = width / 2;
+  var rootY = width / 2;
+  root = new Node(rootX, rootY);
+  var nodes = [];
+
+  for (let index = 0; index < n; index++) {
+    let rx = r * sin(angle);
+    let ry = r * cos(angle);
+    angle += step;
+    let node = new Node(rx + rootX, ry + rootY);
+    node.parent = root;
+    addlayer(node, random(1, 12), r, 0, step, rootX + rx, rootY + ry);
+    nodes.push(node);
+  }
+  root.children = nodes;
+}
+
+function addlayer(root, n, r, angle, step, centerX, centerY) {
+  let nodes = [];
+  for (let index = 0; index < n; index++) {
+    let rx = r * sin(angle);
+    let ry = r * cos(angle);
+    angle += step;
+    let node = new Node(rx + centerX, ry + centerY);
+    node.parent = root;
+    nodes.push(node);
+  }
+  root.children = nodes;
+}
+
+function draw() {
+  background(20);
+  //
+
+  root.display();
+}
+//
+
+var i = 0;
+
+class Node {
+  constructor(posX, posY, children) {
+    this.x = posX;
+    this.y = posY;
+    this.parent = null;
+    this.children = children;
+  }
+
+  display() {
+    stroke(255);
+    strokeWeight(4);
+    ellipse(this.x, this.y, 20, 20);
+    //
+    if (this.parent != null) {
+      line(this.x, this.y, this.parent.x, this.parent.y);
+    }
+    //
+    //draw children if they exist
+    if (this.children != null && this.children.length != 0)
+      this.children.forEach((element) => {
+        element.display();
+      });
+  }
+}
