@@ -1,54 +1,66 @@
-var edges = [];
-var circle = [];
+//Global variables
 var canvasSize = 1000;
 let root;
 let n;
 let r;
 let angle;
 let step;
-let maxDepth;
-let currentDepth;
 //
 function setup() {
+  //
   createCanvas(canvasSize, canvasSize);
   angleMode(RADIANS);
-  //Root
+  //Create a root node at the center of the canvas
   var rootX = width / 2;
   var rootY = width / 2;
   root = new Node(rootX, rootY);
+  /**
+   * Setup vars for generating graph
+   */
   var nodes = [];
-  n = random(1, 12);
+  n = random(1, 6);
   r = n * 20;
   angle = 0;
   step = TWO_PI / n;
-  maxDepth = 100;
+  maxDepth = 3;
   currentDepth = 0;
   //
-  var rootX = width / 2;
-  var rootY = width / 2;
-  root = new Node(rootX, rootY);
+  //
   var nodes = [];
-
+  /** Recursively generate a graph, displaying it's nodes in a circular fashion */
   for (let index = 0; index < n; index++) {
+    //
+    //
     let rx = r * sin(angle);
     let ry = r * cos(angle);
     angle += step;
+    //
     let node = new Node(rx + rootX, ry + rootY);
+    //
     node.parent = root;
-    addlayer(node, random(1, 12), r, 0, step, rootX + rx, rootY + ry);
+    //
+    // Recurse
+    addlayer(node, n, r, 0, step, rootX + rx, rootY + ry);
+    //
     nodes.push(node);
   }
   root.children = nodes;
+  print(nodes);
 }
 
-function addlayer(root, n, r, angle, step, centerX, centerY) {
+function addlayer(root, n, r, angle, step, rootX, rootY) {
   let nodes = [];
   for (let index = 0; index < n; index++) {
+    //
+    //
     let rx = r * sin(angle);
     let ry = r * cos(angle);
     angle += step;
-    let node = new Node(rx + centerX, ry + centerY);
+    //
+    let node = new Node(rx + rootX, ry + rootY);
+    //
     node.parent = root;
+    //
     nodes.push(node);
   }
   root.children = nodes;
@@ -57,7 +69,6 @@ function addlayer(root, n, r, angle, step, centerX, centerY) {
 function draw() {
   background(20);
   //
-
   root.display();
 }
 //
