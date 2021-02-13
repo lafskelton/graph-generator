@@ -1,5 +1,5 @@
 //Global variables
-var canvasSize = 1000;
+var canvasSize = 500;
 let root;
 let n;
 let r;
@@ -18,7 +18,7 @@ function setup() {
    * Setup vars for generating graph
    */
   var nodes = [];
-  n = random(1, 6);
+  n = random(3, 6);
   r = n * 20;
   angle = 0;
   step = TWO_PI / n;
