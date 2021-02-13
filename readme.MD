@@ -1,1 +1,0 @@
-![](./githubhack.svg)
